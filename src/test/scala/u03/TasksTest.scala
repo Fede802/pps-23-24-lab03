@@ -9,25 +9,25 @@ class TasksTest:
 
   val l: Sequence[Int] = Cons(10, Cons(20, Cons(30, Nil())))
 
-  @Test def testSum() =
+  @Test def testSum(): Unit =
     assertEquals(0, Nil().sum)
     assertEquals(60, l.sum)
 
-  @Test def testMap() =
+  @Test def testMap(): Unit =
     assertEquals(Cons(11, Cons(21, Cons(31, Nil()))), l.map(_ + 1))
     assertEquals(Cons("10", Cons("20", Cons("30", Nil()))), l.map(_ + ""))
 
-  @Test def testFilter() =
+  @Test def testFilter(): Unit =
     assertEquals(Cons(20, Cons(30, Nil())), l.filter(_ >= 20))
     assertEquals(Cons(10, Cons(30, Nil())), l.filter(_ != 20))
 
-  @Test def testTake() =
+  @Test def testTake(): Unit =
     assertEquals(Cons(10, Cons(20, Nil())), l.take(2))
     assertEquals(Cons(10, Cons(20, Cons(30, Nil()))), l.take(3))
     assertEquals(Nil(), l.take(0))
     assertEquals(Nil(), Nil().take(2))
 
-  @Test def testZip() =
+  @Test def testZip(): Unit =
     val l2: Sequence[String] = Cons("10", Cons("20", Cons("30", Nil())))
     assertEquals(
       Cons((10, "10"), Cons((20, "20"), Cons((30, "30"), Nil()))),
@@ -37,7 +37,7 @@ class TasksTest:
     assertEquals(Nil(), Nil().zip(l2))
     assertEquals(Nil(), Nil().zip(Nil()))
 
-  @Test def testConcat() =
+  @Test def testConcat(): Unit =
     val l2: Sequence[Int] = Cons(40, Cons(50, Nil()))
     assertEquals(
       Cons(10, Cons(20, Cons(30, Cons(40, Cons(50, Nil()))))),
@@ -45,7 +45,7 @@ class TasksTest:
     )
     assertEquals(Cons(40, Cons(50, Nil())), Nil().concat(l2))
 
-  @Test def testFlatMap() =
+  @Test def testFlatMap(): Unit =
     assertEquals(
       Cons(11, Cons(21, Cons(31, Nil()))),
       l.flatMap(v => Cons(v + 1, Nil()))
@@ -54,24 +54,24 @@ class TasksTest:
 
   import Optionals.Optional.*
 
-  @Test def testMin() =
+  @Test def testMin(): Unit =
     assertEquals(Just(10), l.min)
     assertEquals(Just(1), Cons(1, Nil()).min)
     assertEquals(Empty(), Nil().min)
 
-  @Test def testFoldLeft() =
+  @Test def testFoldLeft(): Unit =
     val lst = Cons(3, Cons(7, Cons(1, Cons(5, Nil()))))
     assertEquals(-16, lst.foldLeft(0)(_ - _))
     assertEquals("3715", lst.foldLeft("")(_ + _))
 
-  @Test def testListifyCorusesWithoutTeachers() =
+  @Test def testListifyCorusesWithoutTeachers(): Unit =
     val s = Sequence.Cons(Person.Student("mario", 1), Nil())
     assertEquals(Nil(), courses(Nil()))
     assertEquals(Nil(), courses(s))
 
   import Person.*
 
-  @Test def testListifyCoursesWithTeachers() =
+  @Test def testListifyCoursesWithTeachers(): Unit =
     val c1 = "PPS"
     val c2 = "PCD"
     val s = Cons(
