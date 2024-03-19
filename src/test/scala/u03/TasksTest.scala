@@ -55,12 +55,10 @@ class TasksTest:
     )
     assertEquals(Nil(), Nil().flatMap(v => Cons(v, Nil())))
 
-  import Optionals.Optional.*
-
   @Test def testMin(): Unit =
-    assertEquals(Just(10), l.min)
-    assertEquals(Just(1), Cons(1, Nil()).min)
-    assertEquals(Empty(), Nil().min)
+    assertEquals(Optional.Just(10), l.min)
+    assertEquals(Optional.Just(1), Cons(1, Nil()).min)
+    assertEquals(Optional.Empty(), Nil().min)
 
   @Test def testFoldLeft(): Unit =
     val lst = Cons(3, Cons(7, Cons(1, Cons(5, Nil()))))

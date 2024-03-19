@@ -1,6 +1,8 @@
 package u03
 
-import u03.Optionals.Optional
+enum Optional[A]:
+  case Just(a: A)
+  case Empty()
 
 // Tasks – part 1 (lists) && Tasks – part 2 (more on lists) (without es 3)
 // svolto da solo
