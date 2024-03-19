@@ -69,7 +69,6 @@ class TasksTest:
     assertEquals(Nil(), courses(Nil()))
     assertEquals(Nil(), courses(s))
 
-  
   import Person.*
 
   @Test def testListifyCoursesWithTeachers() =
