@@ -1,6 +1,6 @@
 package u03
 
-object Streams extends App :
+object Streams extends App:
 
   import Sequences.*
 
@@ -19,34 +19,45 @@ object Streams extends App :
 
     def toList[A](stream: Stream[A]): Sequence[A] = stream match
       case Cons(h, t) => Sequence.Cons(h(), toList(t()))
-      case _ => Sequence.Nil()
+      case _          => Sequence.Nil()
 
     def map[A, B](stream: Stream[A])(f: A => B): Stream[B] = stream match
       case Cons(head, tail) => cons(f(head()), map(tail())(f))
-      case _ => Empty()
+      case _                => Empty()
 
-    def filter[A](stream: Stream[A])(pred: A => Boolean): Stream[A] = stream match
-      case Cons(head, tail) if (pred(head())) => cons(head(), filter(tail())(pred))
-      case Cons(head, tail) => filter(tail())(pred)
-      case _ => Empty()
+    def filter[A](stream: Stream[A])(pred: A => Boolean): Stream[A] =
+      stream match
+        case Cons(head, tail) if (pred(head())) =>
+          cons(head(), filter(tail())(pred))
+        case Cons(head, tail) => filter(tail())(pred)
+        case _                => Empty()
 
     def take[A](stream: Stream[A])(n: Int): Stream[A] = (stream, n) match
       case (Cons(head, tail), n) if n > 0 => cons(head(), take(tail())(n - 1))
-      case _ => Empty()
+      case _                              => Empty()
 
     def iterate[A](init: => A)(next: A => A): Stream[A] =
       cons(init, iterate(next(init))(next))
 
     // Task 3
 
-    def takeWhile[A](stream: Stream[A])(pred: A => Boolean): Stream[A] = stream match
-      case Cons(head, tail) if pred(head()) => cons(head(), takeWhile(tail())(pred))
-      case _ => Empty()
+    def takeWhile[A](stream: Stream[A])(pred: A => Boolean): Stream[A] =
+      stream match
+        case Cons(head, tail) if pred(head()) =>
+          cons(head(), takeWhile(tail())(pred))
+        case _ => Empty()
+
+    def fill[A](n: Int)(x: A): Stream[A] = n match
+      case 0 => Empty()
+      case _ => cons(x, fill(n - 1)(x))
+
+    def iterateSeries(f: Int => Int)(i: Int): Stream[Int] = 
+        cons(f(i), iterateSeries(f)(i+1))
 
   end Stream
 
 @main def tryStreams =
-  import Streams.* 
+  import Streams.*
 
   val str1 = Stream.iterate(0)(_ + 1) // {0,1,2,3,..}
   val str2 = Stream.map(str1)(_ + 1) // {1,2,3,4,..}
@@ -56,3 +67,12 @@ object Streams extends App :
 
   lazy val corec: Stream[Int] = Stream.cons(1, corec) // {1,1,1,..}
   println(Stream.toList(Stream.take(corec)(10))) // [1,1,..,1]
+
+  def pellGen(n: Int): Int = n match
+    case n if n > 1 => 2 * pellGen(n-1) + pellGen(n-2)
+    case 1          => 1 
+    case _          => 0
+
+  val pell: Stream[Int] = Stream.iterateSeries(pellGen(_))(0)
+  println("pell")
+  println(Stream.toList(Stream.take(pell)(10)))

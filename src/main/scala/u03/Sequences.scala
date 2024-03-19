@@ -55,17 +55,39 @@ object Sequences: // Essentially, generic linkedlists
         case Cons(h, t) => concat(mapper(h), flatMap(t)(mapper))
         case _          => Nil()
 
+    // MIN using filter
     // def min(l: Sequence[Int]): Optional[Int] = l match
     //   case Cons(head, tail) if filter(l)(_ < head) == Nil() =>
     //     Optional.Just(head)
     //   case Cons(head, tail) => min(filter(l)(_ < head))
     //   case Nil()            => Optional.Empty()
 
+    // MIN 
+    // recursive step
+    // @annotation.tailrec
+    // def _min(l: Sequence[Int], m: Int): Optional[Int] = l match
+    //   case Cons(h, t) if h > m => _min(t,m)
+    //   case Cons(h,t) => _min(t,h)
+    //   case Nil() => Optional.Just(m)
+    // 
+    // init recursion
+    // def min(l: Sequence[Int]): Optional[Int] = l match
+    //   case Nil() => Optional.Empty()
+    //   case Cons(h, t) => _min(t,h)
+    
     def min(l: Sequence[Int]): Optional[Int] = l match
-      case Cons(head, tail) if filter(l)(_ < head) == Nil() =>
-        Optional.Just(head)
-      case Cons(head, tail) => min(filter(l)(_ < head))
-      case Nil()            => Optional.Empty()
+      case Cons(h1, Nil()) => Optional.Just(h1)
+      case Cons(h1, t1) =>
+        t1 match
+          case Cons(h2, t2) if h1 < h2 => min(Cons(h1, t2))
+          case _                       => min(t1)
+      case Nil() => Optional.Empty()
+
+    def foldLeft[A,B](s: Sequence[A])(a: B)(f: (B, A) => B): B = s match
+      case Cons(h, t) => foldLeft(t)(f(a,h))(f)
+      case Nil() => a
+    
+    
 
 @main def trySequences =
   import Sequences.*

@@ -47,3 +47,8 @@ class SequenceTest:
     assertEquals(Just(10), min(l))
     assertEquals(Just(1), min(Cons(1, Nil())))
     assertEquals(Empty(), min(Nil()))
+
+  @Test def testFoldLeft() =
+    val lst = Cons (3 , Cons (7 , Cons (1 , Cons (5 , Nil () ) ) ) )
+    assertEquals(-16, foldLeft ( lst ) (0) ( _ - _ ))
+    assertEquals("3715", foldLeft ( lst ) ("") ( _ + _ ))
