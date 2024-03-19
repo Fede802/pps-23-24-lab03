@@ -4,6 +4,9 @@ import org.junit.*
 import org.junit.Assert.*
 
 class TasksTest:
+
+  // Tasks – part 1 (lists) && Tasks – part 2 (more on lists) (without es 3)
+  // svolto da solo
   import Sequences.*
   import Sequence.*
 
@@ -64,12 +67,14 @@ class TasksTest:
     assertEquals(-16, lst.foldLeft(0)(_ - _))
     assertEquals("3715", lst.foldLeft("")(_ + _))
 
+  // Tasks – part 2 (more on lists) es 3
+  // svolto da solo
+  import Person.*
+
   @Test def testListifyCorusesWithoutTeachers(): Unit =
     val s = Sequence.Cons(Person.Student("mario", 1), Nil())
     assertEquals(Nil(), courses(Nil()))
     assertEquals(Nil(), courses(s))
-
-  import Person.*
 
   @Test def testListifyCoursesWithTeachers(): Unit =
     val c1 = "PPS"
@@ -83,15 +88,61 @@ class TasksTest:
     )
     assertEquals(Cons(c1, Cons(c2, Nil())), courses(s))
 
+  // Tasks – part 3 (streams)
+  // svolto da solo
   import Streams.*
+  import Stream.*
+
+  @Test def testIterate(): Unit =
+    val str1 = Stream.iterate(0)(_ + 1)
+    assertEquals(
+      Cons(0, Cons(1, Cons(2, Cons(3, Nil())))),
+      toList(Stream.take(str1)(4))
+    )
+
+  @Test def testStreamMap(): Unit =
+    val str1 = Stream.iterate(0)(_ + 1)
+    val str2 = Stream.map(str1)(_ + 1)
+    assertEquals(
+      Cons(1, Cons(2, Cons(3, Cons(4, Nil())))),
+      toList(Stream.take(str2)(4))
+    )
+
+  @Test def testStreamFilter(): Unit =
+    val str1 = Stream.iterate(0)(_ + 1)
+    val str2 = Stream.filter(str1)(x => x % 2 == 1)
+    assertEquals(
+      Cons(1, Cons(3, Cons(5, Cons(7, Nil())))),
+      toList(Stream.take(str2)(4))
+    )
+
+  @Test def takeWhile(): Unit =
+    val str1 = Stream.iterate(0)(_ + 1)
+    val str2 = Stream.takeWhile(str1)(_ < 5)
+    assertEquals(
+      Cons(0, Cons(1, Cons(2, Cons(3, Cons(4, Nil()))))),
+      Stream.toList(str2)
+    )
+
+  @Test def testFill(): Unit =
+    assertEquals(
+      Cons("a", Cons("a", Cons("a", Nil()))),
+      Stream.toList(Stream.fill(3)("a"))
+    )
+
   @Test def testSeriesIterator(): Unit =
     def pellGen(n: Int): Int = n match
       case n if n > 1 => 2 * pellGen(n - 1) + pellGen(n - 2)
       case 1          => 1
       case _          => 0
-
     val pell: Stream[Int] = Stream.iterateSeries(pellGen(_))(0)
+    assertEquals(
+      Cons(0, Cons(1, Cons(2, Cons(5, Cons(12, Nil()))))),
+      Stream.toList(Stream.take(pell)(5))
+    )
 
+  @Test def testPellGenerator(): Unit =
+    val pell: Stream[Int] = Stream.pellSeries()
     assertEquals(
       Cons(0, Cons(1, Cons(2, Cons(5, Cons(12, Nil()))))),
       Stream.toList(Stream.take(pell)(5))

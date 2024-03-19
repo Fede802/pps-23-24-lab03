@@ -31,5 +31,4 @@ class StreamTest:
 
   @Test def testFill(): Unit = 
     assertEquals(Cons ("a", Cons ("a",Cons ("a", Nil ()))), Stream.toList ( Stream . fill (3) ("a") )) 
-    // Cons (a, Cons (a,Cons (a, Nil ()))))
     

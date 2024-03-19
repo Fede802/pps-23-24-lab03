@@ -2,6 +2,8 @@ package u03
 
 import u03.Optionals.Optional
 
+// Tasks – part 1 (lists) && Tasks – part 2 (more on lists) (without es 3)
+// svolto da solo
 object Sequences:
 
   enum Sequence[E]:
@@ -15,13 +17,14 @@ object Sequences:
         case Cons(h, t) => h + t.sum
         case _          => 0
 
+      @annotation.tailrec
       def min: Optional[Int] = l match
         case Cons(h1, Nil()) => Optional.Just(h1)
         case Cons(h1, t1) =>
           t1 match
             case Cons(h2, t2) if h1 < h2 => Cons(h1, t2).min
             case _                       => t1.min
-        case Nil() => Optional.Empty()
+        case _ => Optional.Empty()
 
     extension [A](l: Sequence[A])
       def map[B](mapper: A => B): Sequence[B] =
@@ -34,8 +37,8 @@ object Sequences:
             case _    => Nil()
         )
 
-      def zip[B](second: Sequence[B]): Sequence[(A, B)] =
-        (l, second) match
+      def zip[B](s: Sequence[B]): Sequence[(A, B)] =
+        (l, s) match
           case (Cons(h1, t1), Cons(h2, t2)) => Cons((h1, h2), t1.zip(t2))
           case _                            => Nil()
 
@@ -43,19 +46,23 @@ object Sequences:
         case Cons(h, t) if n > 0 => Cons(h, t.take(n - 1))
         case _                   => Nil()
 
-      def concat(l2: Sequence[A]): Sequence[A] = l match
-        case Cons(h, t) => Cons(h, t.concat(l2))
-        case _          => l2
+      def concat(s: Sequence[A]): Sequence[A] = l match
+        case Cons(h, t) => Cons(h, t.concat(s))
+        case _          => s
 
       def flatMap[B](mapper: A => Sequence[B]): Sequence[B] =
         l match
           case Cons(h, t) => mapper(h).concat(t.flatMap(mapper))
           case _          => Nil()
 
+      @annotation.tailrec
       def foldLeft[B](a: B)(f: (B, A) => B): B = l match
         case Cons(h, t) => t.foldLeft(f(a, h))(f)
         case Nil()      => a
   end Sequence
+
+// Tasks – part 2 (more on lists) es 3
+// svolto da solo
 import Sequences.*
 import Sequence.*
 
@@ -70,6 +77,8 @@ def courses(s: Sequence[Person]): Sequence[String] =
       case _                            => Nil()
   )
 
+// Tasks – part 3 (streams)
+// svolto da solo
 object Streams:
   enum Stream[A]:
     private case Empty()
@@ -119,3 +128,9 @@ object Streams:
 
     def iterateSeries(f: Int => Int)(i: Int): Stream[Int] =
       cons(f(i), iterateSeries(f)(i + 1))
+
+    def pellSeries(): Stream[Int] =
+      def _pellSeries(n: Int, m: Int): Stream[Int] =
+        cons(n, _pellSeries(2 * n + m, n))
+      _pellSeries(0, 1)
+  end Stream
