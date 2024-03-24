@@ -3,11 +3,13 @@ package u03
 import org.junit.*
 import org.junit.Assert.*
 
+
 class FlatMapVariantTest {
 
   import Sequences.*
   import Sequence.*
-  import FlatMapVariant.FilteredMap.*
+  import FlatMapVariant.*
+  import FilteredMap.*
   import FlatMapVariant.FilteredMap.given
 
   @Test def testmapAndFilter(): Unit =

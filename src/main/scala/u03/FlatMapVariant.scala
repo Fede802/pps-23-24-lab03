@@ -29,6 +29,7 @@ object FlatMapVariant:
   import FilteredMap.given
 
   def courses(s: Sequence[Person]): Sequence[String] =
+    println("using")
     s.mapAndFilter(_ match
       case Person.Teacher(name, course) => Optional.Just(course)
       case _                            => Optional.Empty()
