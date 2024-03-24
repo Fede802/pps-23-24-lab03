@@ -24,7 +24,7 @@ class FlatMapVariantTest {
   import Person.*
 
   @Test def testListifyCorusesWithoutTeachers(): Unit =
-    val s = Sequence.Cons(Person.Student("mario", 1), Nil())
+    val s = Sequence.Cons(Person.Student("Bianchi", 1), Nil())
     assertEquals(Nil(), courses(Nil()))
     assertEquals(Nil(), courses(s))
 
