@@ -12,7 +12,7 @@ class FlatMapVariantTest {
   import FilteredMap.*
   import FlatMapVariant.FilteredMap.given
 
-  @Test def testmapAndFilter(): Unit =
+  @Test def testMapAndFilter(): Unit =
     val lst1 = Cons(2, Cons(3, Cons(4, Cons(5, Nil()))))
     val lst2 = Cons(1, lst1)
     val expectedList = Cons(4, Cons(8, Nil()))
