@@ -65,17 +65,6 @@ class TasksTest:
     assertEquals(-16, lst.foldLeft(0)(_ - _))
     assertEquals("3715", lst.foldLeft("")(_ + _))
 
-  @Test def testmapAndFilter(): Unit =
-    val lst1 = Cons(2, Cons(3, Cons(4, Cons(5, Nil()))))
-    val lst2 = Cons(1, Cons(2, Cons(3, Cons(4, Cons(5, Nil())))))
-    val expectedList = Cons(4, Cons(8, Nil()))
-    val mapper: Int => Optional[Int] = x =>
-      x % 2 match
-        case 0 => Optional.Just(x * 2)
-        case _ => Optional.Empty()
-    assertEquals(expectedList, lst1.mapAndFilter(mapper))
-    assertEquals(expectedList, lst2.mapAndFilter(mapper))
-
   // Tasks – part 2 (more on lists) es 3
   // svolto da solo
   import Person.*

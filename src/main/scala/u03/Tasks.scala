@@ -57,13 +57,6 @@ object Sequences:
           case Cons(h, t) => mapper(h).concat(t.flatMap(mapper))
           case _          => Nil()
 
-      def mapAndFilter[B](mapper: A => Optional[B]): Sequence[B] =
-        l.flatMap(
-          mapper(_) match
-            case Optional.Just(a) => Cons(a, Nil())
-            case _                => Nil()
-        )
-
       @annotation.tailrec
       def foldLeft[B](a: B)(f: (B, A) => B): B = l match
         case Cons(h, t) => t.foldLeft(f(a, h))(f)
@@ -80,10 +73,10 @@ enum Person:
   case Teacher(name: String, course: String)
 
 def courses(s: Sequence[Person]): Sequence[String] =
-  s.mapAndFilter(
+  s.flatMap(
     _ match
-      case Person.Teacher(name, course) => Optional.Just(course)
-      case _                            => Optional.Empty()
+      case Person.Teacher(name, course) => Cons(course, Nil())
+      case _                            => Nil()
   )
 
 // Tasks – part 3 (streams)
